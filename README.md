@@ -1,4 +1,4 @@
-### Have You Already Tried Turning Your Model Off And On Again? Towards Stable Continual Test-Time Adaptation
+## Have You Already Tried Turning Your Model Off And On Again? Towards Stable Continual Test-Time Adaptation
 
 This repository contains the code used in our [paper](https://oripress.com/CCC.pdf) to evaluate models on our benchmark, ***Continuously Changing Corruptions (CCC)***.
 Using CCC, we are able to show that all current TTA models fail and become worse than a 
@@ -7,7 +7,7 @@ of the art not just on CCC, but on previous benchmarks as well, as well as on di
 architectures. 
 
 
-###Dataset (Continuously Changing Corruptions)
+### Dataset (Continuously Changing Corruptions)
 CCC can be though of as ImageNet-C, specifically built to evaluate continuously adapting models.
 Each image in CCC is noised using 2 noises. Using 2 noises, we can keep the baseline accuracy of the dataset constant, 
 while enabling smooth transitions between noises.  
