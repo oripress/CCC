@@ -58,6 +58,7 @@ manner:
 ```
 python3 eval.py
 --mode eeta
+--dset /path/to/ccc/
 --logs /logs/folder/
 --baseline 20
 --processind ${SLURM_ARRAY_TASK_ID} 
