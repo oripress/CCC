@@ -1,4 +1,4 @@
-## Have You Already Tried Turning Your Model Off And On Again? Towards Stable Continual Test-Time Adaptation
+# Have You Already Tried Turning Your Model Off And On Again? Towards Stable Continual Test-Time Adaptation
 
 This repository contains the code used in our [paper](https://oripress.com/CCC.pdf) to evaluate models on our benchmark, ***Continuously Changing Corruptions (CCC)***.
 Using CCC, we are able to show that all current TTA models fail and become worse than a 
@@ -7,8 +7,8 @@ of the art not just on CCC, but on previous benchmarks as well, as well as on di
 architectures. 
 
 
-### Dataset (Continuously Changing Corruptions)
-CCC can be though of as ImageNet-C, specifically built to evaluate continuously adapting models.
+## Dataset (Continuously Changing Corruptions)
+CCC can be thought of as ImageNet-C, specifically built to evaluate continuously adapting models.
 Each image in CCC is noised using 2 noises. Using 2 noises, we can keep the baseline accuracy of the dataset constant, 
 while enabling smooth transitions between noises.  
 
@@ -50,7 +50,7 @@ python3 generate.py
 
 
 
-### Evaluating Adaptive Models
+## Evaluating Adaptive Models
 There a few TTA methods that are avaiable to test, including ours, E-ETA.
 Because each difficulty level of CCC contains 3 speeds x 3 seeds, the evaluation code
 is built to evaluate the 9 runs all at once. A sample evaluation can be ran in the following
@@ -65,7 +65,7 @@ python3 eval.py
 ```
 
 
-### Acknowledgements
+## Acknowledgements
 Much of model code is based on the original [Tent](https://github.com/DequanWang/tent) and [EATA](https://github.com/mr-eggplant/EATA/) code.
 The generation code is based on [ImageNet-C](https://github.com/hendrycks/robustness) code.
 Other repos used: [RPL](https://github.com/bethgelab/robustness), [CPL](https://github.com/locuslab/tta_conjugate/), and [CoTTA](https://github.com/qinenergy/cotta).
