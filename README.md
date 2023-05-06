@@ -50,7 +50,7 @@ python3 generate.py
 
 
 
-###Evaluating Adaptive Models
+### Evaluating Adaptive Models
 There a few TTA methods that are avaiable to test, including ours, E-ETA.
 Because each difficulty level of CCC contains 3 speeds x 3 seeds, the evaluation code
 is built to evaluate the 9 runs all at once. A sample evaluation can be ran in the following
@@ -64,7 +64,7 @@ python3 eval.py
 ```
 
 
-###Acknowledgements
+### Acknowledgements
 Much of model code is based on the original [Tent](https://github.com/DequanWang/tent) and [EATA](https://github.com/mr-eggplant/EATA/) code.
 The generation code is based on [ImageNet-C](https://github.com/hendrycks/robustness) code.
 Other repos used: [RPL](https://github.com/bethgelab/robustness), [CPL](https://github.com/locuslab/tta_conjugate/), and [CoTTA](https://github.com/qinenergy/cotta).
