@@ -174,7 +174,7 @@ def GenerateDataset(
     random.seed(seed)
     np.random.seed(seed)
 
-    cutoff = 5 * 50000  # total amount of images to be generated
+    cutoff = 7500000  # total amount of images to be generated
     os.makedirs(destination_folder, exist_ok=True)
     final_path = os.path.join(
         destination_folder,
