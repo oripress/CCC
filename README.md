@@ -1,4 +1,4 @@
-# Have You Already Tried Turning Your Model Off And On Again? Towards Stable Continual Test-Time Adaptation
+# Have You Already Tried Turning Your Model Off And On Again? Questioning The Progress In Test-Time Adaptation
 
 This repository contains the code used in our [paper](https://oripress.com/CCC.pdf) to evaluate models on our benchmark, ***Continuously Changing Corruptions (CCC)***.
 Using CCC, we are able to show that all current TTA models fail and become worse than a 
