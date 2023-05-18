@@ -1,4 +1,4 @@
-# Questioning The Progress In Test-Time Adaptation: Have You Tried Turning Your Model Off And On Again? Test-Time Adaptation
+# RDumb: A simple approach that questions our progress in continual test-time adaptation
 
 ![](.github/static/Figure1.png)
 
