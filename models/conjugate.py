@@ -2,8 +2,8 @@ import torch
 import torch.jit
 import torch.nn.functional as F
 
-from models import register, AdaptiveModel
-from models.functional import configure_model, collect_params
+from models import AdaptiveModel, register
+from models.functional import collect_params, configure_model
 
 
 @register("conjugate")

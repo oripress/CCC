@@ -1,8 +1,8 @@
 import torch
 import torch.nn.functional as F
 
-from models import register, AdaptiveModel
-from models.functional import configure_model, collect_params
+from models import AdaptiveModel, register
+from models.functional import collect_params, configure_model
 
 
 @register("rpl")
@@ -33,5 +33,5 @@ def gce(logits, target, q=0.8):
     """
     probs = F.softmax(logits, dim=1)
     probs_with_correct_idx = probs.index_select(-1, target).diag()
-    loss = (1.0 - probs_with_correct_idx ** q) / q
+    loss = (1.0 - probs_with_correct_idx**q) / q
     return loss.mean()

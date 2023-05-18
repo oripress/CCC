@@ -123,8 +123,8 @@ def traverse_graph(cost_dict, path_dict, arr, i, j, target_val):
         )
 
     if abs(
-            ((cost_dict[(i - 1, j)] + arr[i][j]) / (len(path_dict[i - 1, j]) + 1))
-            - target_val
+        ((cost_dict[(i - 1, j)] + arr[i][j]) / (len(path_dict[i - 1, j]) + 1))
+        - target_val
     ) < abs(
         ((cost_dict[(i, j + 1)] + arr[i][j]) / (len(path_dict[i, j + 1]) + 1))
         - target_val
@@ -162,13 +162,13 @@ def pil_loader(path):
 
 
 def GenerateDataset(
-        data_root,
-        destination_folder,
-        speed,
-        seed,
-        baseline,
-        serial_ind=1,
-        totalprocesses=1,
+    data_root,
+    destination_folder,
+    speed,
+    seed,
+    baseline,
+    serial_ind=1,
+    totalprocesses=1,
 ):
     torch.manual_seed(seed)
     random.seed(seed)
@@ -303,11 +303,11 @@ def GenerateDataset(
 
             if os.path.exists(os.path.join(current_destination_path + ".tar")):
                 if (
-                        isValid(
-                            os.path.join(current_destination_path + ".tar"),
-                            total_images=(IMGS_PER + (IMGS_PER % speed)),
-                        )
-                        == False
+                    isValid(
+                        os.path.join(current_destination_path + ".tar"),
+                        total_images=(IMGS_PER + (IMGS_PER % speed)),
+                    )
+                    == False
                 ):
                     os.remove(os.path.join(current_destination_path + ".tar"))
                 else:
@@ -361,7 +361,6 @@ def GenerateDataset(
 
 class ApplyTransforms(data.Dataset):
     def __init__(self, data_root, n1, n2, s1, s2, freq, use_trn2=False):
-
         self.data_root = data_root
         d = noise_dict()
 
@@ -415,18 +414,18 @@ class ApplyTransforms(data.Dataset):
         img.save(output, format="JPEG", quality=85, optimize=True)
         corrupted_img = output.getvalue()
         info = (
-                "++dir++"
-                + str(path.split("/")[-2])
-                + "++name++"
-                + str(path.split("/")[-1])
-                + "++n1++"
-                + self.n1_name
-                + "++s1++"
-                + str(self.s1)
-                + "++n2++"
-                + self.n2_name
-                + "++s2++"
-                + str(self.s2)
+            "++dir++"
+            + str(path.split("/")[-2])
+            + "++name++"
+            + str(path.split("/")[-1])
+            + "++n1++"
+            + self.n1_name
+            + "++s1++"
+            + str(self.s1)
+            + "++n2++"
+            + self.n2_name
+            + "++s2++"
+            + str(self.s2)
         )
         return corrupted_img, target, info
 
@@ -452,9 +451,9 @@ def isValid(url, total_images):
 
     dataset = (
         wds.WebDataset(url)
-            .decode("pil")
-            .to_tuple("input.jpg", "output.cls")
-            .map_tuple(preproc, identity)
+        .decode("pil")
+        .to_tuple("input.jpg", "output.cls")
+        .map_tuple(preproc, identity)
     )
 
     loader = iter(torch.utils.data.DataLoader(dataset, num_workers=4, batch_size=50))
@@ -512,10 +511,10 @@ if __name__ == "__main__":
 
     speed = [1000, 2000, 5000][
         (args.processind % 9) % 3
-        ]  # transition speeds used the paper
+    ]  # transition speeds used the paper
     seed = [43, 44, 45][
         int((args.processind % 9) / 3)
-        ]  # random seeds used in the paper
+    ]  # random seeds used in the paper
     serial_ind = int(args.processind / 9)
 
     GenerateDataset(

@@ -1,5 +1,7 @@
 import torch
-from models import register, AdaptiveModel
+
+from models import AdaptiveModel, register
+
 
 @register("pretrained")
 class Pretrained(AdaptiveModel):

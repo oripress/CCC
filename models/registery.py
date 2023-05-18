@@ -1,8 +1,10 @@
 """Continual Test Time Adaptation models."""
-import torch.nn as nn
 from typing import List
 
+import torch.nn as nn
+
 __model_registry = {}
+
 
 def _clear_registry():
     """Clear the entries in the registry."""
@@ -19,6 +21,7 @@ def register(name: str):
             raise ValueError(f"Duplicate name added to registry: {name}.")
         __model_registry[name] = cls
         return cls
+
     return _register
 
 
