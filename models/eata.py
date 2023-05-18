@@ -10,7 +10,7 @@ import torch.jit
 import torch.nn as nn
 import torch.nn.functional as F
 
-from models import register, AdaptiveModel
+from models import AdaptiveModel, register
 
 
 @register("eata")
@@ -132,7 +132,6 @@ class EATA(AdaptiveModel):
                 with torch.no_grad():
                     return 0.9 * current_model_probs + (1 - 0.9) * new_probs.mean(0)
 
-
     def get_fisher_vectors(self, model, fisher_amount, loader):
         model = configure_model(model)
         params, param_names = collect_params(model)
@@ -164,4 +163,4 @@ class EATA(AdaptiveModel):
         return fishers
 
 
-from models.functional import configure_model, collect_params, softmax_entropy
+from models.functional import collect_params, configure_model, softmax_entropy

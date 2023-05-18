@@ -1,5 +1,6 @@
 import torch
-from models import register, AdaptiveModel
+
+from models import AdaptiveModel, register
 from models.functional import erase_bn_stats
 
 

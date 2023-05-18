@@ -1,16 +1,15 @@
 from copy import deepcopy
 
+import PIL
 import torch
 import torch.jit
-
-import PIL
 import torchvision.transforms as transforms
-from torchvision.transforms import ColorJitter, Compose, Lambda
 import torchvision.transforms.functional as F
 from numpy import random
+from torchvision.transforms import ColorJitter, Compose, Lambda
 
-from models import register, AdaptiveModel
-from models.functional import configure_model, collect_params
+from models import AdaptiveModel, register
+from models.functional import collect_params, configure_model
 
 
 @register("cotta")
@@ -290,6 +289,8 @@ def update_ema_variables(ema_model, model, alpha_teacher):  # , iteration):
     return ema_model
 
 
-def softmax_entropy(x, x_ema):# -> torch.Tensor:
+def softmax_entropy(x, x_ema):  # -> torch.Tensor:
     """Entropy of softmax distribution from logits."""
-    return -0.5*(x_ema.softmax(1) * x.log_softmax(1)).sum(1)-0.5*(x.softmax(1) * x_ema.log_softmax(1)).sum(1)
+    return -0.5 * (x_ema.softmax(1) * x.log_softmax(1)).sum(1) - 0.5 * (
+        x.softmax(1) * x_ema.log_softmax(1)
+    ).sum(1)

@@ -25,9 +25,9 @@ def get_webds_loader(dset_path):
     )
     dataset = (
         wds.WebDataset(url)
-            .decode("pil")
-            .to_tuple("input.jpg", "output.cls")
-            .map_tuple(preproc, identity)
+        .decode("pil")
+        .to_tuple("input.jpg", "output.cls")
+        .map_tuple(preproc, identity)
     )
     dataloader = torch.utils.data.DataLoader(dataset, num_workers=4, batch_size=64)
     return dataloader
@@ -48,7 +48,11 @@ def test(model, dset_path, file_name=None):
         correct_this_batch = pred.eq(labels.view_as(pred)).sum().item()
 
         with open(file_name, "a+") as f:
-            f.write(("acc_{:.10f}\n").format(float(100 * correct_this_batch) / images.size(0)))
+            f.write(
+                ("acc_{:.10f}\n").format(
+                    float(100 * correct_this_batch) / images.size(0)
+                )
+            )
 
 
 def evaluate(args):
@@ -65,8 +69,13 @@ def evaluate(args):
     cur_seed = [43, 44, 45][args.processind % 3]
     speed = [1000, 2000, 5000][int(args.processind / 3)]
 
-    file_name = os.path.join(args.logs, exp_name, "model_{}_baseline_{}_transition+speed_{}_seed_{}.txt".format(
-        str(args.mode), str(args.baseline), str(speed), str(cur_seed)))
+    file_name = os.path.join(
+        args.logs,
+        exp_name,
+        "model_{}_baseline_{}_transition+speed_{}_seed_{}.txt".format(
+            str(args.mode), str(args.baseline), str(speed), str(cur_seed)
+        ),
+    )
 
     dset_name = "baseline_{}_transition+speed_{}_seed_{}".format(
         str(args.baseline), str(speed), str(cur_seed)
@@ -78,19 +87,20 @@ def evaluate(args):
     model = torch.nn.parallel.DataParallel(model)
 
     assert args.mode in registery.get_options()
-    if args.mode == 'eta' or args.mode == 'eata':
+    if args.mode == "eta" or args.mode == "eata":
         loader = get_webds_loader(dset_path)
-        model = registery.init(args.mode, model, loader, args.mode=='eta')
+        model = registery.init(args.mode, model, loader, args.mode == "eta")
     else:
         model = registery.init(args.mode, model)
 
     test(model, dset_path, file_name=file_name)
 
 
-
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--mode", type=str, default="tent", choices=registery.get_options())
+    parser.add_argument(
+        "--mode", type=str, default="tent", choices=registery.get_options()
+    )
     parser.add_argument("--processind", type=int, default=0)
     parser.add_argument("--baseline", type=float, default=20)
     parser.add_argument("--logs", type=str)

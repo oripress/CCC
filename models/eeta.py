@@ -3,25 +3,19 @@
 Copyright to EATA ICML 2022 Authors, 2022.03.20
 Based on Tent ICLR 2021 Spotlight.
 """
+import math
+
 import torch
 import torch.jit
-
-import math
 import torch.nn.functional as F
 
-from models import register, AdaptiveModel
-from models.functional import (
-    configure_model,
-    collect_params,
-    softmax_entropy,
-    copy_model_and_optimizer,
-    load_model_and_optimizer,
-)
+from models import AdaptiveModel, functional, register
+
 
 @register("eeta")
 class EETA(AdaptiveModel):
-    """Our model is ETA with Episodic Resetting
-    """
+    """Our model is ETA with Episodic Resetting"""
+
     def __init__(self, model):
         super().__init__(model)
         self.num_samples_update_1 = (
@@ -37,13 +31,13 @@ class EETA(AdaptiveModel):
             None  # the moving average of probability vector (Eqn. 4)
         )
 
-        params, param_names = collect_params(model)
-        model = configure_model(model)
+        params, param_names = functional.collect_params(model)
+        model = functional.configure_model(model)
 
         self.model = model
         self.optimizer = torch.optim.SGD(params, 0.00025, momentum=0.9)
 
-        self.model_state, self.optimizer_state = copy_model_and_optimizer(
+        self.model_state, self.optimizer_state = functional.copy_model_and_optimizer(
             self.model, self.optimizer
         )
         self.total_steps = 0
@@ -53,9 +47,8 @@ class EETA(AdaptiveModel):
         self,
         x,
     ):
-
         if self.total_steps % 1000 == 0:
-            load_model_and_optimizer(
+            functional.load_model_and_optimizer(
                 self.model, self.optimizer, self.model_state, self.optimizer_state
             )
             self.current_model_probs = None
@@ -63,7 +56,7 @@ class EETA(AdaptiveModel):
         # forward
         outputs = self.model(x)
         # adapt
-        entropys = softmax_entropy(outputs)
+        entropys = functional.softmax_entropy(outputs)
         # filter unreliable samples
         filter_ids_1 = torch.where(entropys < self.e_margin)
         ids1 = filter_ids_1
