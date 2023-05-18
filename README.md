@@ -55,8 +55,8 @@ python3 generate.py                     \
 
 ## Evaluating Adaptive Models
 
-There a few TTA methods that are avaiable to test, including ours, E-ETA.
-Because each difficulty level of CCC contains 3 speeds x 3 seeds, the evaluation code
+There a few TTA methods that are avaiable to test, including ours, RDumb.
+Because each difficulty level of CCC contains 3 seeds x 3 transition speeds, the evaluation code
 is built to evaluate the 9 runs all at once. A sample evaluation can be ran in the following
 manner:
 
