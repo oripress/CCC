@@ -18,9 +18,9 @@ from models.functional import (
     load_model_and_optimizer,
 )
 
-@register("eeta")
-class EETA(AdaptiveModel):
-    """Our model is ETA with Episodic Resetting
+@register("rdumb")
+class RDumb(AdaptiveModel):
+    """Our model is ETA with Resetting
     """
     def __init__(self, model):
         super().__init__(model)

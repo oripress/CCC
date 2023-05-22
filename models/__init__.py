@@ -5,6 +5,6 @@ from .batchnorm import BNAdapt
 from .conjugate import ConjugateLoss
 from .cotta import CoTTA
 from .eata import EATA
-from .eeta import EETA
+from .rdumb import EETA
 from .rpl import RPL
 from .tent import Tent

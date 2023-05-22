@@ -57,7 +57,7 @@ is built to evaluate the 9 runs all at once. A sample evaluation can be ran in t
 manner:
 ```
 python3 eval.py
---mode eeta
+--mode rdumb
 --dset /path/to/ccc/
 --logs /logs/folder/
 --baseline 20
