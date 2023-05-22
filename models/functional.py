@@ -1,7 +1,7 @@
-import torch.nn as nn
-import torch.jit
-
 from copy import deepcopy
+
+import torch.jit
+import torch.nn as nn
 
 
 @torch.jit.script
