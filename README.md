@@ -13,7 +13,7 @@ architectures.
 
 CCC can be thought of as ImageNet-C, specifically built to evaluate continuously adapting models.
 Each image in CCC is noised using 2 noises. Using 2 noises, we can keep the baseline accuracy of the dataset constant,
-while enabling smooth transitions between noises.
+while enabling smooth transitions between pairs of noises.
 
 ![](.github/static/ccc.gif)
 
