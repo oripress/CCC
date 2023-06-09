@@ -2,7 +2,7 @@
 
 ![](.github/static/Figure1.png)
 
-This repository contains the code used in our [paper](https://oripress.com/CCC.pdf) to evaluate models on our benchmark, ***Continuously Changing Corruptions (CCC)***.
+This repository contains the code used in our [paper](https://arxiv.org/abs/2306.05401) to evaluate models on our benchmark, ***Continuously Changing Corruptions (CCC)***.
 Using CCC, we are able to show that all current TTA models fail and become worse than a
 pretrained, non-adapting model. We show how a very simple baseline approach sets the state
 of the art not just on CCC, but on previous benchmarks as well, as well as on different
