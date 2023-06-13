@@ -68,6 +68,16 @@ python3 eval.py
 --processind ${SLURM_ARRAY_TASK_ID} 
 ```
 
+## Citation
+```
+@article{press2023rdumb,
+  title={RDumb: A simple approach that questions our progress in continual test-time adaptation},
+  author={Press, Ori and Schneider, Steffen and K{\"u}mmerer, Matthias and Bethge, Matthias},
+  journal={arXiv preprint arXiv:2306.05401},
+  year={2023}
+}
+```
+
 
 ## Acknowledgements
 
