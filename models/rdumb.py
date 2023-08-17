@@ -22,7 +22,7 @@ class RDumb(AdaptiveModel):
             0  # number of samples after First filtering, exclude unreliable samples
         )
         self.num_samples_update_2 = 0  # number of samples after Second filtering, exclude both unreliable and redundant samples
-        self.e_margin = math.log(1000) / 2 - 1  # hyper-parameter E_0 (Eqn. 3)
+        self.e_margin = math.log(1000) * 0.4  # hyper-parameter E_0 (Eqn. 3)
         self.d_margin = (
             0.05  # hyper-parameter \epsilon for consine simlarity thresholding (Eqn. 5)
         )
