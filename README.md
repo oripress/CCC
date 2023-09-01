@@ -44,14 +44,14 @@ Slurm script that can be used to launch multiple processes:
 
 singularity exec gen.sif
 python3 generate.py                     \
-    --processind ${SLURM_ARRAY_TASK_ID} \
-    --baseline 20                       \
-    --totalprocesses 90                 \
     --imagenetval /path/to/imagenetval  \
-    --dest /path/to/dest/
+    --dest /path/to/dest/               \
+    --baseline 20                       \
+    --processind ${SLURM_ARRAY_TASK_ID} \
+    --totalprocesses 90                 \
 ```
 
-
+Note: CCC-Hard, CCC-Medium, and CCC-Easy are generated with --baseline 0, 20, and 40 respectively.
 
 ## Evaluating Adaptive Models
 
