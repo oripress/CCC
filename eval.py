@@ -14,7 +14,7 @@ def identity(x):
 
 
 def get_webds_loader(dset_path):
-    highest_ind = os.listdir(dset_path)[-1].split("_")[-1].replace(".tar", "")
+    highest_ind = sorted(os.listdir(dset_path)[-1].split("_")[-1].replace(".tar", ""))
     url = os.path.join(dset_path, "serial_{{00000..{}}}.tar".format(highest_ind))
     normalize = trn.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
     preproc = trn.Compose(
