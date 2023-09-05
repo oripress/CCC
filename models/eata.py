@@ -26,7 +26,7 @@ class EATA(AdaptiveModel):
             0  # number of samples after First filtering, exclude unreliable samples
         )
         self.num_samples_update_2 = 0  # number of samples after Second filtering, exclude both unreliable and redundant samples
-        self.e_margin = math.log(1000) / 2 - 1  # hyper-parameter E_0 (Eqn. 3)
+        self.e_margin = 0.4 * math.log(1000)  # hyper-parameter E_0 (Eqn. 3)
         self.d_margin = (
             0.05  # hyper-parameter \epsilon for consine simlarity thresholding (Eqn. 5)
         )
@@ -152,10 +152,10 @@ class EATA(AdaptiveModel):
                         )
                     else:
                         fisher = param.grad.data.clone().detach() ** 2
-                    if iter_ * 64 >= fisher_amount:
+                    if iter_ * 64 >= fisher_amount: # loader uses a batch size of 64
                         fisher = fisher / iter_
-                    fishers.update({name: [fisher, param.data.clone().detach()]})
-                    break
+                        fishers.update({name: [fisher, param.data.clone().detach()]})
+                        break
             ewc_optimizer.zero_grad()
         del ewc_optimizer
         del loader
