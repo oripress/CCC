@@ -154,9 +154,11 @@ class EATA(AdaptiveModel):
                         fisher = param.grad.data.clone().detach() ** 2
                     if iter_ * 64 >= fisher_amount: # loader uses a batch size of 64
                         fisher = fisher / iter_
-                        fishers.update({name: [fisher, param.data.clone().detach()]})
-                        break
+                    fishers.update({name: [fisher, param.data.clone().detach()]})
             ewc_optimizer.zero_grad()
+            if iter_ * 64 >= fisher_amount:
+                break
+        
         del ewc_optimizer
         del loader
 
