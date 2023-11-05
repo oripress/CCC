@@ -86,4 +86,4 @@ The generation code is based on [ImageNet-C](https://github.com/hendrycks/robust
 Other repos used: [RPL](https://github.com/bethgelab/robustness), [CPL](https://github.com/locuslab/tta_conjugate/), and [CoTTA](https://github.com/qinenergy/cotta).
 A previous version of the dataset and code was published in [Shift Happens '22 @ ICML](https://github.com/shift-happens-benchmark/icml-2022).
 
-See the [NOTICE](NOTICE) for more details and licenses.
+See the [LICENSE](https://github.com/oripress/CCC/blob/main/LICENSE)https://github.com/oripress/CCC/blob/main/LICENSE) for more details and licenses.
