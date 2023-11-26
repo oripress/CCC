@@ -38,7 +38,7 @@ def test(model, dset_path, file_name=None):
     dataset_loader = get_webds_loader(dset_path)
 
     for i, (images, labels) in enumerate(dataset_loader):
-        if total_seen_so_far < 7500000:
+        if total_seen_so_far > 7500000:
             return
         images, labels = images.cuda(non_blocking=True), labels.cuda(non_blocking=True)
         output = model(images)
