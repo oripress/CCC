@@ -18,6 +18,12 @@ while enabling smooth transitions between pairs of noises.
 ![](.github/static/ccc.gif)
 
 
+<p align="center">
+  <img src=".github/static/ccc.gif" />
+</p>
+
+
+
 The code to generate the dataset can be found in ```generate.py```. The code is parallelizable, which means that the whole
 dataset can be generated quickly.
 
