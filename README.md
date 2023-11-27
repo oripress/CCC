@@ -15,9 +15,6 @@ CCC can be thought of as ImageNet-C, specifically built to evaluate continuously
 Each image in CCC is noised using 2 noises. Using 2 noises, we can keep the baseline accuracy of the dataset constant,
 while enabling smooth transitions between pairs of noises.
 
-![](.github/static/ccc.gif)
-
-
 <p align="center">
   <img src=".github/static/ccc.gif" />
 </p>
