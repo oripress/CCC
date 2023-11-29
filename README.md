@@ -1,3 +1,7 @@
+## Update: CCC can now be streamed, no download required!
+By default, CCC is now streamed from the cloud, with no download or generation of the data required.
+
+
 # RDumb: A simple approach that questions our progress in continual test-time adaptation
 
 ![](.github/static/Figure1.png)
@@ -19,10 +23,6 @@ while enabling smooth transitions between pairs of noises.
   <img src=".github/static/ccc.gif" />
 </p>
 
-
-
-### CCC can now be streamed, no download required!
-By default, CCC is now streamed from the cloud, with no download or generation of the data required.
 
 
 The code to generate the dataset can be found in ```generate.py```. The code is parallelizable, which means that the whole
