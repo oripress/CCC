@@ -13,9 +13,10 @@ def identity(x):
     return x
 
 
-def get_webds_loader(dset_path):
-    highest_ind = sorted(os.listdir(dset_path)[-1].split("_")[-1].replace(".tar", ""))
-    url = os.path.join(dset_path, "serial_{{00000..{}}}.tar".format(highest_ind))
+def get_webds_loader(dset_name):
+    #url = os.path.join(dset_path, "serial_{{00000..99999}}.tar") Uncoment this to use a local copy of CCC
+    url = f'https://mlcloud.uni-tuebingen.de:7443/datasets/CCC/{dset_name}/serial_{{00000..99999}}.tar'
+
     normalize = trn.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
     preproc = trn.Compose(
         [
@@ -29,7 +30,7 @@ def get_webds_loader(dset_path):
         .to_tuple("input.jpg", "output.cls")
         .map_tuple(preproc, identity)
     )
-    dataloader = torch.utils.data.DataLoader(dataset, num_workers=4, batch_size=64)
+    dataloader = torch.utils.data.DataLoader(dataset, num_workers=1, batch_size=64)
     return dataloader
 
 
@@ -82,7 +83,8 @@ def evaluate(args):
     dset_name = "baseline_{}_transition+speed_{}_seed_{}".format(
         str(args.baseline), str(speed), str(cur_seed)
     )
-    dset_path = os.path.join(args.dset, dset_name)
+    
+    #dset_name = os.path.join(args.dset, dset_name) Uncomment this to use a local copy of CCC
 
     model = models.resnet50(pretrained=True)
     model.to(device)
@@ -90,7 +92,7 @@ def evaluate(args):
 
     assert args.mode in registery.get_options()
     if args.mode == "eta" or args.mode == "eata":
-        loader = get_webds_loader(dset_path)
+        loader = get_webds_loader(dset_name)
         model = registery.init(args.mode, model, loader, args.mode == "eta")
     else:
         model = registery.init(args.mode, model)
