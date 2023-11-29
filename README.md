@@ -21,6 +21,10 @@ while enabling smooth transitions between pairs of noises.
 
 
 
+### CCC can now be streamed, no download required!
+By default, CCC is now streamed from the cloud, with no download or generation of the data required.
+
+
 The code to generate the dataset can be found in ```generate.py```. The code is parallelizable, which means that the whole
 dataset can be generated quickly.
 
