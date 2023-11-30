@@ -1,4 +1,4 @@
-## Update: CCC can now be streamed, no download required!
+## :new: CCC can now be streamed, no download required!
 By default, CCC is now streamed from the cloud, with no download or generation of the data required.
 
 
