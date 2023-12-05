@@ -24,7 +24,7 @@ while enabling smooth transitions between pairs of noises.
 </p>
 
 
-
+You do not need to generate or download the dataset; by default, it is streamed from the cloud.
 The code to generate the dataset can be found in ```generate.py```. The code is parallelizable, which means that the whole
 dataset can be generated quickly.
 
