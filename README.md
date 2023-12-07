@@ -1,5 +1,20 @@
 ## :new: CCC can now be streamed, no download required!
-By default, CCC is now streamed from the cloud, with no download or generation of the data required.
+
+By default, CCC is now streamed from the cloud, with no download or generation of the data required. For example:
+
+``` python
+import eval
+
+dataloader = eval.get_webds_loader("baseline_20_transition+speed_1000_seed_44")
+for batch in dataloader:
+    # ...
+```
+
+Available datasets: `baseline_<baseline acc>_transition+speed_<speed>_seed_<seed>`
+
+- `baseline acc`: 0, 20, 40
+- `speed`: 1000, 2000, 5000
+- `seed`: 43, 44, 45
 
 
 # RDumb: A simple approach that questions our progress in continual test-time adaptation
