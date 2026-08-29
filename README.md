@@ -1,22 +1,3 @@
-## :new: CCC can now be streamed, no download required!
-
-By default, CCC is now streamed from the cloud, with no download or generation of the data required. For example:
-
-``` python
-import eval
-
-dataloader = eval.get_webds_loader("baseline_20_transition+speed_1000_seed_44")
-for batch in dataloader:
-    # ...
-```
-
-Available datasets: `baseline_<baseline acc>_transition+speed_<speed>_seed_<seed>`
-
-- `baseline acc`: 0, 20, 40
-- `speed`: 1000, 2000, 5000
-- `seed`: 43, 44, 45
-
-
 # RDumb: A simple approach that questions our progress in continual test-time adaptation
 
 ![](.github/static/Figure1.png)
@@ -39,32 +20,51 @@ while enabling smooth transitions between pairs of noises.
 </p>
 
 
-You do not need to generate or download the dataset; by default, it is streamed from the cloud.
-The code to generate the dataset can be found in ```generate.py```. The code is parallelizable, which means that the whole
-dataset can be generated quickly.
+The previous hosted CCC streaming endpoint is no longer supported. Generate the
+required runs locally from the ImageNet validation set with `generate.py`. The
+generator is parallelizable, so different shards can be created concurrently.
 
-For example, you start generating using the following script:
+The ImageNet validation directory must be extracted into one subdirectory per
+class. This example generates CCC-Medium with transition speed 1000 and seed 44:
 
-
-``` bash
+```bash
 python3 generate.py                  \
-    --imagenetval /imagenet_dir/val/ \
-    --dest /destination/folder/      \
-    --baseline 40                    \
-    --processind 1                   \
-    --totalprocesses 1
+    --imagenetval /path/to/imagenet/val \
+    --dest /path/to/ccc                 \
+    --baseline 20                       \
+    --processind 3                      \
+    --totalprocesses 9
 ```
 
-To use more processes, simply run the script multiple times with different proccessind arguments. Because CCC is made up of 3 seeds x 3 transition speeds,
-it is recommended to use a total number of processes that is a multiple of 9. Here is an example
-Slurm script that can be used to launch multiple processes:
+This writes shards under
+`/path/to/ccc/baseline_20_transition+speed_1000_seed_44/`. Baseline values are
+written as integers, so `--baseline 20` produces `baseline_20`, not
+`baseline_20.0`.
 
-``` bash
+CCC uses three transition speeds and three seeds. Within each block of nine
+process indices, `processind % 9` selects a run as follows:
+
+| Index | Speed | Seed |
+| ---: | ---: | ---: |
+| 0 | 1000 | 43 |
+| 1 | 2000 | 43 |
+| 2 | 5000 | 43 |
+| 3 | 1000 | 44 |
+| 4 | 2000 | 44 |
+| 5 | 5000 | 44 |
+| 6 | 1000 | 45 |
+| 7 | 2000 | 45 |
+| 8 | 5000 | 45 |
+
+`--totalprocesses` must be a multiple of 9. Values greater than 9 assign
+multiple workers to each run. For example, this Slurm job assigns ten workers
+to each of the nine speed and seed combinations:
+
+```bash
 #!/bin/bash
 #SBATCH --job-name=ccc
 #SBATCH --array=0-89
 
-singularity exec gen.sif
 python3 generate.py                     \
     --imagenetval /path/to/imagenetval  \
     --dest /path/to/dest/               \
@@ -73,21 +73,23 @@ python3 generate.py                     \
     --totalprocesses 90                 \
 ```
 
-Note: CCC-Hard, CCC-Medium, and CCC-Easy are generated with --baseline 0, 20, and 40 respectively.
+CCC-Hard, CCC-Medium, and CCC-Easy are generated with `--baseline 0`,
+`--baseline 20`, and `--baseline 40`, respectively.
 
 ## Evaluating Adaptive Models
 
-There a few TTA methods that are avaiable to test, including ours, RDumb.
-Because each difficulty level of CCC contains 3 seeds x 3 transition speeds, the evaluation code
-is built to evaluate the 9 runs all at once. A sample evaluation can be ran in the following
-manner:
-```
-python3 eval.py
---mode rdumb
---dset /path/to/ccc/
---logs /logs/folder/
---baseline 20
---processind ${SLURM_ARRAY_TASK_ID} 
+There are a few TTA methods available to test, including RDumb.
+Each difficulty level contains three seeds and three transition speeds. Launch
+`eval.py` with process indices 0 through 8 to evaluate all nine runs. For
+example, process index 3 evaluates transition speed 1000 with seed 44:
+
+```bash
+python3 eval.py                         \
+    --mode rdumb                        \
+    --dset /path/to/ccc                 \
+    --logs /path/to/logs                \
+    --baseline 20                       \
+    --processind 3
 ```
 
 ## Citation

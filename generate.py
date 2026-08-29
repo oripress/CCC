@@ -15,6 +15,7 @@ import torchvision.transforms as trn
 import webdataset as wds
 from PIL import Image
 
+from ccc_config import dataset_name, stream_config
 from make_imagenet_c import noise_dict
 
 IMGS_PER = 25000
@@ -177,10 +178,7 @@ def GenerateDataset(
     cutoff = 7500000  # total amount of images to be generated
     os.makedirs(destination_folder, exist_ok=True)
     final_path = os.path.join(
-        destination_folder,
-        "baseline_{}_transition+speed_{}_seed_{}".format(
-            str(baseline), str(speed), str(seed)
-        ),
+        destination_folder, dataset_name(baseline, speed, seed)
     )
     os.makedirs(final_path, exist_ok=True)
 
@@ -502,19 +500,21 @@ def get_frost_images(data_dir):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--baseline", type=float)
-    parser.add_argument("--processind", type=int)
-    parser.add_argument("--totalprocesses", type=int)
-    parser.add_argument("--imagenetval", type=str)
-    parser.add_argument("--dest", type=str)
+    parser.add_argument(
+        "--baseline", type=float, choices=(0, 20, 40), required=True
+    )
+    parser.add_argument("--processind", type=int, required=True)
+    parser.add_argument("--totalprocesses", type=int, required=True)
+    parser.add_argument("--imagenetval", type=str, required=True)
+    parser.add_argument("--dest", type=str, required=True)
     args = parser.parse_args()
 
-    speed = [1000, 2000, 5000][
-        (args.processind % 9) % 3
-    ]  # transition speeds used the paper
-    seed = [43, 44, 45][
-        int((args.processind % 9) / 3)
-    ]  # random seeds used in the paper
+    if args.totalprocesses <= 0 or args.totalprocesses % 9 != 0:
+        parser.error("--totalprocesses must be a positive multiple of 9")
+    if args.processind < 0 or args.processind >= args.totalprocesses:
+        parser.error("--processind must be between 0 and totalprocesses - 1")
+
+    speed, seed = stream_config(args.processind)
     serial_ind = int(args.processind / 9)
 
     GenerateDataset(
@@ -524,5 +524,5 @@ if __name__ == "__main__":
         seed=seed,
         baseline=args.baseline,
         serial_ind=serial_ind,
-        totalprocesses=int(args.totalprocesses / 9),
+        totalprocesses=args.totalprocesses // 9,
     )

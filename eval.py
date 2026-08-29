@@ -1,4 +1,5 @@
 import argparse
+import glob
 import os
 
 import torch
@@ -6,6 +7,7 @@ import torchvision.models as models
 import torchvision.transforms as trn
 import webdataset as wds
 
+from ccc_config import baseline_name, dataset_name, stream_config
 from models import registery
 
 
@@ -13,9 +15,10 @@ def identity(x):
     return x
 
 
-def get_webds_loader(dset_name):
-    #url = os.path.join(dset_path, "serial_{{00000..99999}}.tar") Uncoment this to use a local copy of CCC
-    url = f'https://mlcloud.uni-tuebingen.de:7443/datasets/CCC/{dset_name}/serial_{{00000..99999}}.tar'
+def get_webds_loader(dset_path):
+    shards = sorted(glob.glob(os.path.join(dset_path, "serial_*.tar")))
+    if not shards:
+        raise FileNotFoundError("No CCC shards found in {}".format(dset_path))
 
     normalize = trn.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
     preproc = trn.Compose(
@@ -25,7 +28,7 @@ def get_webds_loader(dset_name):
         ]
     )
     dataset = (
-        wds.WebDataset(url)
+        wds.WebDataset(shards, shardshuffle=False)
         .decode("pil")
         .to_tuple("input.jpg", "output.cls")
         .map_tuple(preproc, identity)
@@ -54,7 +57,7 @@ def test(model, dset_path, file_name=None):
                     float(100 * correct_this_batch) / images.size(0)
                 )
             )
-        if total_seen_so_far > 7500000:
+        if total_seen_so_far >= 7500000:
             return
 
 
@@ -64,27 +67,23 @@ def evaluate(args):
     if not cuda_available:
         raise ValueError("CUDA not available")
     device = torch.device("cuda")
-    exp_name = "ccc_{}".format(str(args.baseline))
+    baseline = baseline_name(args.baseline)
+    exp_name = "ccc_{}".format(baseline)
 
-    if not os.path.exists(os.path.join(args.logs, exp_name)):
-        os.mkdir(os.path.join(args.logs, exp_name))
+    os.makedirs(os.path.join(args.logs, exp_name), exist_ok=True)
 
-    cur_seed = [43, 44, 45][args.processind % 3]
-    speed = [1000, 2000, 5000][int(args.processind / 3)]
+    speed, cur_seed = stream_config(args.processind)
 
     file_name = os.path.join(
         args.logs,
         exp_name,
         "model_{}_baseline_{}_transition+speed_{}_seed_{}.txt".format(
-            str(args.mode), str(args.baseline), str(speed), str(cur_seed)
+            str(args.mode), baseline, str(speed), str(cur_seed)
         ),
     )
 
-    dset_name = "baseline_{}_transition+speed_{}_seed_{}".format(
-        str(args.baseline), str(speed), str(cur_seed)
-    )
-    
-    #dset_name = os.path.join(args.dset, dset_name) Uncomment this to use a local copy of CCC
+    dset_name = dataset_name(args.baseline, speed, cur_seed)
+    dset_path = os.path.join(args.dset, dset_name)
 
     model = models.resnet50(pretrained=True)
     model.to(device)
@@ -92,7 +91,7 @@ def evaluate(args):
 
     assert args.mode in registery.get_options()
     if args.mode == "eta" or args.mode == "eata":
-        loader = get_webds_loader(dset_name)
+        loader = get_webds_loader(dset_path)
         model = registery.init(args.mode, model, loader, args.mode == "eta")
     else:
         model = registery.init(args.mode, model)
@@ -105,10 +104,10 @@ if __name__ == "__main__":
     parser.add_argument(
         "--mode", type=str, default="tent", choices=registery.get_options()
     )
-    parser.add_argument("--processind", type=int, default=0)
-    parser.add_argument("--baseline", type=float, default=20)
-    parser.add_argument("--logs", type=str)
-    parser.add_argument("--dset", type=str)
+    parser.add_argument("--processind", type=int, choices=range(9), default=0)
+    parser.add_argument("--baseline", type=float, choices=(0, 20, 40), default=20)
+    parser.add_argument("--logs", type=str, required=True)
+    parser.add_argument("--dset", type=str, required=True)
     args = parser.parse_args()
 
     evaluate(args)
